@@ -6,17 +6,28 @@ accessGranted = False
 
 notes = []
 
-try:
-    with open("phonePassword.text", 'x') as file:
-        newPassword = input("Enter the password you'd like to set your phone to have: ")
-        file.write(newPassword)
-        passwordCreated = True
-except FileExistsError:
-    with open("phonePassword.text", 'r') as file:
-        firstLine = file.readline()
-        for letter in firstLine:
-            if letter != " ":
-                phonePassword += letter
+
+def load_data():
+    global passwordCreated, phonePassword, accessGranted
+    try:
+        with open("phonePassword.text", 'x') as file:
+            new_password = input("Enter the password you'd like to set your phone to have: ")
+            file.write(new_password)
+            passwordCreated = True
+    except FileExistsError:
+        with open("phonePassword.text", 'r') as file:
+            first_line = file.readline()
+            for letter in first_line:
+                if letter != " ":
+                    phonePassword += letter
+
+    try:
+        with open("notesData.txt", 'r') as file:
+            for line in file.readlines():
+                notes.append(line)
+    except FileExistsError:
+        with open("notesData.txt", 'w') as file:
+            _ = file.read()
 
 
 def time_check():
@@ -73,6 +84,13 @@ def take_notes():
             except ValueError:
                 print("You haven't entered a valid number")
         elif command == "exit":
+            with open("notesData.text", 'w') as file:
+                file.write("")
+            with open("notesData.text", 'a') as file:
+                for i, note in enumerate(notes):
+                    file.write(note)
+                    if i < len(notes) - 1:
+                        file.write("\n")
             break
         else:
             print("Error")
