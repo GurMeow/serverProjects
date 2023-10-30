@@ -7,6 +7,12 @@ accessGranted = False
 notes = []
 
 
+class PhoneBookContact:
+    def __init__(self, name, number):
+        self.name = name
+        self.number = number
+
+
 def load_data():
     global passwordCreated, phonePassword, accessGranted
     try:
@@ -110,6 +116,7 @@ def phone():
 
 
 def main():
+    load_data()
     global accessGranted
     if not passwordCreated:
         while True:
